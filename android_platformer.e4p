@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric project file for project android_platformer -->
-<!-- Saved: 2018-01-21, 23:12:38 -->
+<!-- Saved: 2018-01-21, 23:15:16 -->
 <!-- Copyright (C) 2018 Umberto Minora, umbertofilippo@tiscali.it -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -14,6 +14,7 @@
   <Eol index="0"/>
   <Sources>
     <Source>__init__.py</Source>
+    <Source>game/main.py</Source>
   </Sources>
   <Forms/>
   <Translations/>
@@ -22,6 +23,7 @@
   <Others>
     <Other>.gitignore</Other>
   </Others>
+  <MainScript>game/main.py</MainScript>
   <Vcs>
     <VcsType>Git</VcsType>
     <VcsOptions>
