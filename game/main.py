@@ -38,10 +38,25 @@ class Joypad(object):
         self.btn_right.rect.x, self.btn_right.rect.y = 75,  WIN_HEIGHT - 75
         
         self.buttons = pygame.sprite.Group()
-        self.buttons.add(self.btn_down)
         self.buttons.add(self.btn_up)
+        self.buttons.add(self.btn_down)
         self.buttons.add(self.btn_left)
         self.buttons.add(self.btn_right)
+        
+    def btn_pressed(self):
+        
+        ev = pygame.event.wait()
+        # check if left mouse is being pressed
+        if pygame.mouse.get_pressed()[0]:
+            x, y  = ev.pos
+            if self.btn_up.rect.collidepoint(x, y):
+                print('UP')
+            elif self.btn_down.rect.collidepoint(x, y):
+                print('DOWN')
+            elif self.btn_left.rect.collidepoint(x, y):
+                print('LEFT')
+            elif self.btn_right.rect.collidepoint(x, y):
+                print('RIGHT')
 
 def save_state(x, y):
     """
@@ -96,9 +111,9 @@ def main():
 
             pygame.display.flip()
 
-
         ev = pygame.event.wait()
 
+        joypad.btn_pressed()
         # Pygame quit.
         if ev.type == pygame.QUIT:
             break
@@ -106,10 +121,6 @@ def main():
         # Android back key.
         elif ev.type == pygame.KEYDOWN and ev.key == pygame.K_AC_BACK:
             break
-
-        elif ev.type == pygame.MOUSEBUTTONDOWN:
-            x, y  = ev.pos
-            print((x,  y))
 
         elif ev.type == pygame.APP_WILLENTERBACKGROUND:
             # The app is about to go to sleep. It should save state, cancel
