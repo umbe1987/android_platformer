@@ -50,14 +50,65 @@ class Joypad(object):
         if pygame.mouse.get_pressed()[0]:
             x, y  = ev.pos
             if self.btn_up.rect.collidepoint(x, y):
-                print('UP')
+                return 'UP'
             elif self.btn_down.rect.collidepoint(x, y):
-                print('DOWN')
+                return 'DOWN'
             elif self.btn_left.rect.collidepoint(x, y):
-                print('LEFT')
+                return 'LEFT'
             elif self.btn_right.rect.collidepoint(x, y):
-                print('RIGHT')
+                return 'RIGHT'
 
+# https://www.pygame.org/docs/ref/sprite.html#pygame.sprite.Sprite
+class Character(pygame.sprite.Sprite):
+    """
+    Basic generic character class
+    """
+
+    # Constructor. Pass in the color of the block,
+    # and its x and y position
+    def __init__(self, color, width, height):
+       super(Character,  self).__init__()
+
+       # Create an image of the block, and fill it with a color.
+       # This could also be an image loaded from the disk.
+       self.image = pygame.Surface([width, height])
+       self.image.fill(color)
+       
+       # Fetch the rectangle object that has the dimensions of the image
+       # Update the position of this object by setting the values of rect.x and rect.y
+       self.rect = self.image.get_rect()
+       
+       self.speed = 5
+       
+    def move(self, joypad_direction):
+        """
+        move the character
+        to be used along with Joypad.btn_pressed returns
+        ('UP', 'DOWN' 'LEFT', 'RIGHT')
+        """
+        
+        self.dx = 0
+        self.dy = 0
+        
+        # check for horizontal move
+        if joypad_direction == 'LEFT':
+            self.dx = -self.speed
+            self.rect.move_ip(-self.speed, 0)
+        if joypad_direction == 'RIGHT':
+            self.dx = +self.speed
+            self.rect.move_ip(self.speed, 0)
+            
+        self.dx = 0
+            
+        # check for vertical move
+        if joypad_direction == 'UP':
+            self.dy = -self.speed
+            self.rect.move_ip(0, -self.speed)
+        if joypad_direction == 'DOWN':
+            self.dy = +self.speed
+            self.rect.move_ip(0, self.speed)
+        self.dy = 0
+       
 def save_state(x, y):
     """
     Saves the game state.
@@ -91,6 +142,7 @@ def main():
     sleeping = False
     
     joypad = Joypad()
+    hero = Character((0, 0, 255), 5, 5)
 
     # On startup, load state saved by APP_WILLENTERBACKGROUND, and the delete
     # that state.
@@ -101,9 +153,11 @@ def main():
 
         # If not sleeping, draw the screen.
         if not sleeping:
+            hero.move(joypad.btn_pressed())
             screen.fill((0, 0, 0, 255))
 
             joypad.buttons.draw(screen)
+            screen.blit(hero.image, hero.rect)
 
             if x is not None:
                 #screen.blit(icon, (x - icon_w / 2, y - icon_h / 2))
