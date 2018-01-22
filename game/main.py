@@ -14,7 +14,7 @@ class Button(pygame.sprite.Sprite):
     Button for Joypad object.
     """
     
-    def __init__(self, color=(255, 0, 0), width=25, height=25):
+    def __init__(self, color=(255, 0, 0), width=50, height=50):
        # Call the parent class (Sprite) constructor
        pygame.sprite.Sprite.__init__(self)
        
@@ -32,10 +32,10 @@ class Joypad(object):
         self.btn_down = Button()
         self.btn_left = Button()
         self.btn_right = Button()
-        self.btn_up.rect.x, self.btn_up.rect.y = 50,  WIN_HEIGHT - 100
-        self.btn_down.rect.x, self.btn_down.rect.y = 50,  WIN_HEIGHT - 50
-        self.btn_left.rect.x, self.btn_left.rect.y = 25,  WIN_HEIGHT - 75
-        self.btn_right.rect.x, self.btn_right.rect.y = 75,  WIN_HEIGHT - 75
+        self.btn_up.rect.x, self.btn_up.rect.y = 100,  WIN_HEIGHT - 200
+        self.btn_down.rect.x, self.btn_down.rect.y = 100,  WIN_HEIGHT - 100
+        self.btn_left.rect.x, self.btn_left.rect.y = 50,  WIN_HEIGHT - 150
+        self.btn_right.rect.x, self.btn_right.rect.y = 150,  WIN_HEIGHT - 150
         
         self.buttons = pygame.sprite.Group()
         self.buttons.add(self.btn_up)
@@ -43,12 +43,11 @@ class Joypad(object):
         self.buttons.add(self.btn_left)
         self.buttons.add(self.btn_right)
         
-    def btn_pressed(self):
+    def btn_pressed(self, mouse_event):
         
-        ev = pygame.event.wait()
         # check if left mouse is being pressed
         if pygame.mouse.get_pressed()[0]:
-            x, y  = ev.pos
+            x, y  = mouse_event.pos
             if self.btn_up.rect.collidepoint(x, y):
                 return 'UP'
             elif self.btn_down.rect.collidepoint(x, y):
@@ -151,23 +150,22 @@ def main():
 
     while True:
 
+        ev = pygame.event.wait()
+        
         # If not sleeping, draw the screen.
         if not sleeping:
-            hero.move(joypad.btn_pressed())
+            hero.move(joypad.btn_pressed(ev))
             screen.fill((0, 0, 0, 255))
 
             joypad.buttons.draw(screen)
-            screen.blit(hero.image, hero.rect)
 
             if x is not None:
-                #screen.blit(icon, (x - icon_w / 2, y - icon_h / 2))
-                pass
+                screen.blit(hero.image, (x, y))
 
             pygame.display.flip()
-
-        ev = pygame.event.wait()
-
-        joypad.btn_pressed()
+        
+        x, y = hero.rect.x, hero.rect.y
+        
         # Pygame quit.
         if ev.type == pygame.QUIT:
             break
