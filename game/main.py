@@ -154,7 +154,9 @@ def main():
         
         # If not sleeping, draw the screen.
         if not sleeping:
-            hero.move(joypad.btn_pressed(ev))
+            if ev.type == pygame.MOUSEMOTION or ev.type == pygame.MOUSEBUTTONUP:
+                hero.move(joypad.btn_pressed(ev))
+                
             screen.fill((0, 0, 0, 255))
 
             joypad.buttons.draw(screen)
