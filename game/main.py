@@ -44,18 +44,19 @@ class Joypad(object):
         self.buttons.add(self.btn_right)
         
     def btn_pressed(self, mouse_event):
+        """
+        check if mouse or touch event occurs at buttons'cooridnates
+        """
         
-        # check if left mouse is being pressed
-        if pygame.mouse.get_pressed()[0]:
-            x, y  = mouse_event.pos
-            if self.btn_up.rect.collidepoint(x, y):
-                return 'UP'
-            elif self.btn_down.rect.collidepoint(x, y):
-                return 'DOWN'
-            elif self.btn_left.rect.collidepoint(x, y):
-                return 'LEFT'
-            elif self.btn_right.rect.collidepoint(x, y):
-                return 'RIGHT'
+        x, y  = mouse_event.pos
+        if self.btn_up.rect.collidepoint(x, y):
+            return 'UP'
+        elif self.btn_down.rect.collidepoint(x, y):
+            return 'DOWN'
+        elif self.btn_left.rect.collidepoint(x, y):
+            return 'LEFT'
+        elif self.btn_right.rect.collidepoint(x, y):
+            return 'RIGHT'
 
 # https://www.pygame.org/docs/ref/sprite.html#pygame.sprite.Sprite
 class Character(pygame.sprite.Sprite):
