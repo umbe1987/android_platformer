@@ -32,10 +32,19 @@ class Joypad(object):
         self.btn_down = Button()
         self.btn_left = Button()
         self.btn_right = Button()
-        self.btn_up.rect.x, self.btn_up.rect.y = 100,  WIN_HEIGHT - 200
-        self.btn_down.rect.x, self.btn_down.rect.y = 100,  WIN_HEIGHT - 100
-        self.btn_left.rect.x, self.btn_left.rect.y = 50,  WIN_HEIGHT - 150
-        self.btn_right.rect.x, self.btn_right.rect.y = 150,  WIN_HEIGHT - 150
+        
+        self.x_screen_offset = 50
+        self.y_screen_offset = 50
+        
+        # position buttons
+        # UP
+        self.btn_up.rect.x, self.btn_up.rect.y = (WIN_WIDTH/2) - (self.btn_up.rect.width/2),  self.y_screen_offset
+        # DOWN
+        self.btn_down.rect.x, self.btn_down.rect.y = (WIN_WIDTH/2) - (self.btn_down.rect.width/2),  (WIN_HEIGHT - self.y_screen_offset - self.btn_down.rect.height)
+        #LEFT
+        self.btn_left.rect.x, self.btn_left.rect.y = self.x_screen_offset,  ((WIN_HEIGHT/2) - (self.btn_left.rect.height/2))
+        # RIGHT
+        self.btn_right.rect.x, self.btn_right.rect.y = WIN_WIDTH - self.x_screen_offset - self.btn_right.rect.width,  ((WIN_HEIGHT/2) - (self.btn_left.rect.height/2))
         
         self.buttons = pygame.sprite.Group()
         self.buttons.add(self.btn_up)
@@ -142,7 +151,8 @@ def main():
     sleeping = False
     
     joypad = Joypad()
-    hero = Character((0, 0, 255), 5, 5)
+    hero = Character((0, 0, 255), 50, 50)
+    hero.rect.x, hero.rect.y = (WIN_WIDTH/2 - hero.rect.width/2), (WIN_HEIGHT/2 - hero.rect.height/2)
 
     # On startup, load state saved by APP_WILLENTERBACKGROUND, and the delete
     # that state.
